@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const port = process.env.PORT || 3001;
 
-
+app.use(cors());
 // Parse JSON request bodies
 app.use(express.json());
 global.message =  {
@@ -16,11 +17,20 @@ app.get('/message', (req, res) => {
 });
 
 app.post('/message', (req, res) => {
-  if (req.query.from && req.query.message) {
-    global.message = { 
-      from: req.query.from,
-      message: req.query.message,
-      date: new Date()
+  if (req.body.from && req.body.message) {
+    if (req.body.message === "anyone there?") {
+      global.message = { 
+        from: "System",
+        message: "Chu là!",
+        date: new Date()
+      }
+    }
+    else {
+      global.message = { 
+        from: req.body.from,
+        message: req.body.message,
+        date: new Date()
+      }
     }
   }
   res.status(201).send("Message created");
