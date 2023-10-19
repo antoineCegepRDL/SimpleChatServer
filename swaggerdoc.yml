@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: Todo API
+  version: 1.0.0
+paths:
+  /todos:
+    get:
+      summary: Get all todos
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              example:
+                - id: "1"
+                  isCompleted: true
+                  date: "2023-10-19T00:00:00.000Z"
+                  text: "todo completed"
+                - id: "2"
+                  isCompleted: false
+                  date: "2023-10-19T00:00:00.000Z"
+                  text: "todo not completed"
+    post:
+      summary: Create a new todo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+      responses:
+        201:
+          description: Todo created
+          content:
+            application/json:
+              example:
+                id: "3"
+                isCompleted: false
+                date: "2023-10-19T00:00:00.000Z"
+                text: "New todo"
+        400:
+          description: Bad request
+          content:
+            text/plain:
+              example: "Bad todo"
+  /todo/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the todo
+        schema:
+          type: string
+    patch:
+      summary: Update a todo's completion status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isCompleted:
+                  type: boolean
+      responses:
+        204:
+          description: Todo patched
+        400:
+          description: Bad request
+          content:
+            text/plain:
+              example: "Bad todo"
+    delete:
+      summary: Delete a todo
+      responses:
+        204:
+          description: Todo deleted
+        400:
+          description: Bad request
+          content:
+            text/plain:
+              example: "Bad todo"

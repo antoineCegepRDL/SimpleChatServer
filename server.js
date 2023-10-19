@@ -6,36 +6,66 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 // Parse JSON request bodies
 app.use(express.json());
-global.message =  {
-  from: "System",
-  message: "Hi, this is the system",
-  date: new Date()
-}
+global.todos = [{
+  id: "1",
+  isCompleted: true,
+  date: new Date(),
+  text: 'todo completed'
+},
+{
+  id: "2",
+  isCompleted: false,
+  date: new Date(),
+  text: 'todo not completed'
+}]
+
 // Create a route to log the request body
-app.get('/message', (req, res) => {
-  res.send(global.message);
+app.get('/todos', (req, res) => {
+  res.send(global.todos);
 });
 
-app.post('/message', (req, res) => {
-  if (req.body.from && req.body.message) {
-    if (req.body.message === "anyone there?") {
-      global.message = { 
-        from: "System",
-        message: "Chu là!",
-        date: new Date()
-      }
+app.post('/todo', (req, res) => {
+  if (req.body.text) {
+    const todo = {
+      id: generateId(),
+      isCompleted: false,
+      date: new Date(),
+      text: req.body.text
     }
-    else {
-      global.message = { 
-        from: req.body.from,
-        message: req.body.message,
-        date: new Date()
-      }
-    }
+    global.todos.push(todo)
+    res.status(201).send(todo);
   }
-  res.status(201).send("Message created");
+  else {
+    res.status(400).send("bad todo");
+  }
 });
 
+app.patch('/todo/:id', (req, res) => {
+  if (req.params.id && req.body.isCompleted === false || req.body.isCompleted === true) {
+    const todos = [...global.todos]
+    const todo = todos.find(x => x.id == req.params.id)
+    todo.isCompleted = req.body.isCompleted
+    global.todos = todos
+    res.status(204).send("todo patched");
+  }
+  else {
+    res.status(400).send("bad todo");
+  }
+});
+
+app.delete('/todo/:id', (req, res) => {
+  if (req.params.id) {
+    global.todos = todos.filter(x => x.id !== req.params.id)
+    res.status(204).send("todo deleted");
+  }
+  else {
+    res.status(400).send("bad todo");
+  }
+});
+
+const generateId = () => {
+  return new Date().getTime().toString();
+}
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
