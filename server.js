@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const yaml = require('yamljs');
 const port = process.env.PORT || 3001;
 
 app.use(cors());
@@ -66,7 +68,13 @@ app.delete('/todo/:id', (req, res) => {
 const generateId = () => {
   return new Date().getTime().toString();
 }
+
+const swaggerDocument = yaml.load('./swaggerdoc.yml');
+
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
