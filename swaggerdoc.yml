@@ -1,0 +1,45 @@
+openapi: 3.0.0
+info:
+  title: Simple Chat Server API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3001
+paths:
+  /developper:
+    get:
+      summary: Get developer information
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Developer'
+    post:
+      summary: Create a new developer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Developer'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+components:
+  schemas:
+    Developer:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+          minimum: 0
+        isAProWithReact:
+          type: boolean
+        salary:
+          type: number
+          minimum: 0
