@@ -50,3 +50,11 @@ app.post('/developper', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+const swaggerDocument = yaml.load('./swaggerdoc.yml');
+
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
