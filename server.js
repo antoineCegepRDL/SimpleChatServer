@@ -1,11 +1,10 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const port = process.env.PORT || 3003;
+const port = process.env.PORT || 3001;
 const cookieParser = require('cookie-parser');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
-const fs = require('fs');
 
 app.use(cookieParser());
 
@@ -37,7 +36,6 @@ app.get('/developper', (req, res) => {
 });
 
 app.post('/developper', (req, res) => {
-  console.log("🚀 ~ app.post ~ req.body:", req.body)
   if (!req.body.name)
     return res.status(400).send("Missing required name");
   if (!req.body.age || req.body.age < 0)
