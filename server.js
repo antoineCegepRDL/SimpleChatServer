@@ -5,6 +5,7 @@ const port = process.env.PORT || 3001;
 const cookieParser = require('cookie-parser');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
+const fs = require('fs');
 
 app.use(cookieParser());
 
@@ -17,8 +18,10 @@ app.use((req, res, next) => {
 });
 
 app.use(cors());
+
 // Parse JSON request bodies
 app.use(express.json());
+
 const default_developper = {	
   name: 'Antoine Chagnon Michaud',
       age: 35,
@@ -49,7 +52,7 @@ app.post('/developper', (req, res) => {
 });
 
 // Start the server
-const swaggerDocument = yaml.load('./swaggerdoc.yml');
+const swaggerDocument = yaml.load(fs.readFileSync('./swaggerdoc.yaml', 'utf8'));
 
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
