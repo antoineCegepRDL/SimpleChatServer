@@ -22,6 +22,7 @@ paths:
                   isCompleted: false
                   date: "2023-10-19T00:00:00.000Z"
                   text: "todo not completed"
+  /todo:
     post:
       summary: Create a new todo
       requestBody:
@@ -85,3 +86,4 @@ paths:
           content:
             text/plain:
               example: "Bad todo"
+
