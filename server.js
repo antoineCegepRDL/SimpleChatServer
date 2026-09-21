@@ -16,7 +16,11 @@ const getCookieValue = (cookieHeader, cookieName) => {
   }
   const cookies = cookieHeader.split(';').map((cookie) => cookie.trim());
   const cookie = cookies.find((item) => item.startsWith(`${cookieName}=`));
-  return cookie ? decodeURIComponent(cookie.split('=').slice(1).join('=')) : null;
+try {
+    return cookie ? decodeURIComponent(cookie.split('=').slice(1).join('=')) : null;
+  } catch {
+    return null;
+  }
 };
 
 const createSessionId = () => crypto.randomBytes(32).toString('hex');
